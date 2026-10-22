@@ -3,156 +3,314 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تحميل التطبيق</title>
+  <title>ISP MONITOR - الحل الذكي لإدارة شبكات المايكروتك والاتصالات</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Cairo", sans-serif;
     }
 
     body {
-      background-color: #f4f7f6;
-      color: #333;
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      padding: 25px 15px;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    .container {
-      background: #ffffff;
-      max-width: 480px;
+    /* خلفية الفقاعات الحية المتحركة */
+    .bubbles-container {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      padding: 30px 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      border-radius: 50%;
+      opacity: 0.25;
+      animation: rise 14s infinite linear;
+      filter: blur(2px);
+    }
+
+    .b1 { width: 45px; height: 45px; left: 10%; background: #00d2ff; animation-duration: 9s; }
+    .b2 { width: 75px; height: 75px; left: 25%; background: #00f2fe; animation-duration: 13s; animation-delay: 2s; }
+    .b3 { width: 30px; height: 30px; left: 45%; background: #3a7bd5; animation-duration: 7s; animation-delay: 4s; }
+    .b4 { width: 60px; height: 60px; left: 70%; background: #00d2ff; animation-duration: 11s; animation-delay: 1s; }
+    .b5 { width: 90px; height: 90px; left: 85%; background: #4facfe; animation-duration: 16s; animation-delay: 3s; }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(0.9);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.35;
+      }
+      80% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* الحاوية والبطاقة الزجاجية */
+    .card {
+      position: relative;
+      z-index: 2;
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 24px;
+      max-width: 520px;
+      width: 100%;
+      padding: 35px 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 210, 255, 0.1);
       text-align: center;
     }
 
+    /* شعار التطبيق النابض */
+    .icon-wrapper {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px auto;
+    }
+
     .app-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #007bff, #0056b3);
-      color: white;
-      font-size: 32px;
-      font-weight: bold;
-      border-radius: 20px;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+      border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px auto;
-      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+      font-size: 40px;
+      box-shadow: 0 10px 25px rgba(0, 210, 255, 0.4);
+      position: relative;
+      z-index: 2;
+    }
+
+    .pulse {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      background: #00d2ff;
+      opacity: 0.4;
+      animation: pulseAnimation 2.2s infinite ease-out;
+      z-index: 1;
+    }
+
+    @keyframes pulseAnimation {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.35); opacity: 0; }
+    }
+
+    /* الشارات والنصوص */
+    .badge {
+      display: inline-block;
+      background: rgba(0, 210, 255, 0.12);
+      color: #00d2ff;
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 30px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
     }
 
     h1 {
-      font-size: 24px;
-      margin-bottom: 8px;
-      color: #1a1a1a;
-    }
-
-    .version {
-      font-size: 13px;
-      color: #777;
-      margin-bottom: 20px;
-    }
-
-    p.description {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #555;
-      margin-bottom: 24px;
-    }
-
-    .features {
-      text-align: right;
-      background: #f9fbfb;
-      padding: 16px;
-      border-radius: 10px;
-      margin-bottom: 25px;
-      border: 1px solid #eef2f2;
-    }
-
-    .features h3 {
-      font-size: 14px;
-      margin-bottom: 10px;
-      color: #333;
-    }
-
-    .features ul {
-      list-style-type: none;
-      font-size: 13px;
-      color: #666;
-    }
-
-    .features li {
+      font-size: 28px;
+      font-weight: 800;
+      color: #ffffff;
       margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+
+    .promo-box {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 25px;
+      text-align: right;
+      border-right: 4px solid #00d2ff;
+      line-height: 1.7;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    /* شبكة المميزات */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+      text-align: right;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    .feature-icon {
+      font-size: 18px;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .support-badge {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+      font-size: 12.5px;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 24px;
       display: flex;
       align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    .features li::before {
-      content: "✓";
-      color: #28a745;
-      margin-left: 8px;
-      font-weight: bold;
-    }
-
+    /* زر التحميل الاحترافي */
     .download-btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       width: 100%;
-      background-color: #007bff;
-      color: white;
+      background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
+      color: #ffffff;
       text-decoration: none;
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      transition: background-color 0.2s, transform 0.1s;
+      padding: 16px 20px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3);
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
     }
 
     .download-btn:hover {
-      background-color: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(0, 210, 255, 0.45);
+      background: linear-gradient(135deg, #00c0ea 0%, #326ec2 100%);
     }
 
     .download-btn:active {
-      transform: scale(0.98);
+      transform: translateY(1px);
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #64748b;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <!-- أيقونة التطبيق أو شعاره -->
-    <div class="app-icon">App</div>
+  <!-- تأثير الفقاعات الحية -->
+  <div class="bubbles-container">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+    <div class="bubble b4"></div>
+    <div class="bubble b5"></div>
+  </div>
 
-    <!-- اسم التطبيق والإصدار -->
-    <h1>اسم التطبيق هنا</h1>
-    <div class="version">الإصدار 1.0.0 • الحجم: 15MB</div>
-
-    <!-- نبذة عن التطبيق -->
-    <p class="description">
-      تطبيق مصمم لإدارة ومتابعة العمليات اليومية بكفاءة وسرعة، مع واجهة مستخدم سهلة ودعم للتحديثات المباشرة.
-    </p>
-
-    <!-- قائمة الميزات -->
-    <div class="features">
-      <h3>أبرز المميزات:</h3>
-      <ul>
-        <li>أداء سريع واستهلاك منخفض للموارد.</li>
-        <li>واجهة تدعم اللغة العربية بالكامل.</li>
-        <li>مزامنة وتنبيهات فورية.</li>
-      </ul>
+  <div class="card">
+    <!-- الشعار النابض -->
+    <div class="icon-wrapper">
+      <div class="pulse"></div>
+      <div class="app-icon">📡</div>
     </div>
 
-    <!-- زر التحميل المباشر -->
-    <!-- إذا كان الملف داخل نفس المستودع، ضع اسمه هنا مثل: app-release.apk -->
-<a href="v2.3.apk" class="download-btn" download>
+    <span class="badge">الجيل الجديد لإدارة الأبراج</span>
+    <h1>ISP MONITOR</h1>
+    <p class="subtitle">مهندسك الذكي ومراقب شبكتك على مدار الساعة</p>
 
-      تحميل ملف APK
+    <!-- إعلان ترويجي راقي -->
+    <div class="promo-box">
+      ودّع عناء تتبع الأعطال وانقطاعات البث المفاجئة! مع <strong>ISP MONITOR</strong>، أصبحت شبكتك بين يديك عبر خوارزميات رصد ذكية تعمل في الوقت الفعلي لتمنحك الأمان الرقمي والاستقرار الكامل لبنيتك التحتية.
+    </div>
+
+    <!-- ميزات التطبيق المتقدمة -->
+    <div class="features-list">
+      <div class="feature-item">
+        <span class="feature-icon">⚡</span>
+        <div><strong>إنذار فوري وذكي:</strong> رصد آلي واستشعار للأعطال مع إشعارات مباشرة عند حدوث أي خلل في الأبراج أو السيرفرات.</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">🖥️</span>
+        <div><strong>إدارة خوادم MikroTik:</strong> متابعة مستمرة لأداء السيرفرات، الحمل، الجلسات، واستقرار حركة البيانات دون تأخير.</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">📶</span>
+        <div><strong>مراقبة متزامنة للأبراج:</strong> تتبع حالة كافة مرسلات الشبكة والقطاعات (Sectors) بدقة لحظة بلحظة وفي وقت واحد.</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">👥</span>
+        <div><strong>حالة الزبائن والاشتراكات:</strong> عرض شامل ومباشر لجميع المشتركين لتوفير أعلى جودة خدمة وأقل نسبة شكاوى.</div>
+      </div>
+
+      <div class="feature-item">
+        <span class="feature-icon">📊</span>
+        <div><strong>تحليلات وإحصائيات متقدمة:</strong> تقارير بيانية تفصيلية تكشف نقاط الضعف وتختصر ساعات البحث والتعب في الصيانة.</div>
+      </div>
+    </div>
+
+    <!-- شارة الدعم الفني -->
+    <div class="support-badge">
+      <span>🛠️</span>
+      <span><strong>دعم فني واستشارات متخصصة:</strong> فريق تقني متكامل لمساعدتك وحل المشكلات 24/7.</span>
+    </div>
+
+    <!-- زر التحميل بنفس اسم الملف المرفوع في المستودع -->
+    <a href="v2.3.apk" class="download-btn" download>
+      <span>تحميل التطبيق الآن (APK)</span>
+      <span>📥</span>
     </a>
+
+    <div class="footer-note">الإصدار v2.3 • متوافق مع كافة أجهزة أندرويد الحديثة</div>
   </div>
 
 </body>
